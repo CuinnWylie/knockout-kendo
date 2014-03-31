@@ -20,6 +20,8 @@ kendo = kendo || window.kendo;
 
 //import "knockout-kendoAutoComplete.js"
 
+//import "knockout-kendoButton.js"
+
 //import "knockout-kendoCalendar.js"
 
 //import "knockout-kendoColorPicker.js"
@@ -38,15 +40,23 @@ kendo = kendo || window.kendo;
 
 //import "knockout-kendoListView.js"
 
+//import "knockout-kendoMaskedTextBox.js"
+
 //import "knockout-kendoMenu.js"
 
 //import "knockout-kendoMultiSelect.js"
+
+//import "knockout-kendoNotification.js"
 
 //import "knockout-kendoNumericTextBox.js"
 
 //import "knockout-kendoPanelBar.js"
 
+//import "knockout-kendoProgressBar.js"
+
 //import "knockout-kendoRangeSlider.js"
+
+//import "knockout-kendoScheduler.js"
 
 //import "knockout-kendoSlider.js"
 
