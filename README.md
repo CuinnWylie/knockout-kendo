@@ -1,14 +1,17 @@
 # knockout-kendo
 
+# Note
+Kendo UI Labs projects are experimental and largely built and supported by the community.  As such Telerik does not provide official support for any of the Kendo UI Labs projects via Telerik support agreements.  We do encourage you to open an issue or visit [Stack Overflow](http://www.stackoverflow.com).
+
 **knockout-kendo** is a project to create a robust set of [Knockout.js](http://knockoutjs.com/) bindings for the [Kendo UI](http://kendoui.com/) widgets.
 
 ## Compatibility and Requirements
 
 knockout-kendo was designed to work with Kendo UI and Knockout.js. The project depends on the following libraries:
 
-- [jQuery](http://www.jquery.com) v1.8.2
-- [Kendo UI](http://www.kendoui.com)  v2012.3.1114
-- [Knockout](http://www.knockoutjs.com) v2.3
+- [jQuery](http://www.jquery.com) v1.9.1
+- [Kendo UI](http://www.kendoui.com)  v2014.1.318
+- [Knockout](http://www.knockoutjs.com) v3.1
 
 knockout-kendo has not been tested against any other versions of these libraries. You may find that versions other than these are compatible with [Project Name], but we make no claims to support those version, nor can we troubleshoot issues that arise when using those versions.
 
@@ -31,7 +34,7 @@ Download the plugin from here or grab the latest build from the source. Referenc
 	
 	<script src="js/jquery.min.js"></script>
 	<script src="js/kendo.web.min.js"></script>
-	<script src="js/knockout-2.3.0.js"></script>
+	<script src="js/knockout-3.1.0.js"></script>
 	<script src="js/knockout-kendo.min.js"></script>
 
 Note: It is fine to reference Kendo UI scripts for individual widgets rather than all widgets (kendo.web.min.js), as this plugin will only create bindings for available widgets.
