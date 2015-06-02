@@ -245,7 +245,6 @@ var generateEventHandlerTests = function(widgetConfig, testOptions) {
 
                                 runs(function() {
                                     var spy = vm[event + "_spy"];
-                                    console.log(event, spy);
 
                                     widget = $(el).data(widgetConfig.name);
 
@@ -265,7 +264,7 @@ var generateEventHandlerTests = function(widgetConfig, testOptions) {
                             });
                         });
                     }
-                    else {
+                    else if (config.call && widgetConfig[config.call]) {
                         //test calling a function
                         describe("when " + event + " event is triggered", function() {
                             it("should call the " + config.call + "handler with the appropriate arguments and context", function() {

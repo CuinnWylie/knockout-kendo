@@ -1,4 +1,9 @@
+//handle require.js scenarios where kendo is not actually returned
+kendo = kendo || window.kendo;
+
 ko.kendo = ko.kendo || {};
+
+var unwrap = ko.utils.unwrapObservable; //support older 2.x KO where ko.unwrap was not defined
 
 ko.kendo.BindingFactory = function() {
     var self = this;
@@ -13,22 +18,22 @@ ko.kendo.BindingFactory = function() {
 
         //the binding handler's init function
         binding.init = function(element, valueAccessor, all, vm, context) {
-              //step 1: build appropriate options for the widget from values passed in and global options
-              var options = self.buildOptions(widgetConfig, valueAccessor);
+            //step 1: build appropriate options for the widget from values passed in and global options
+            var options = self.buildOptions(widgetConfig, valueAccessor);
 
-              //apply async, so inner templates can finish content needed during widget initialization
-              if (options.async === true || (widgetConfig.async === true && options.async !== false)) {
-                  setTimeout(function() {
-                      binding.setup(element, options, context);
-                  }, 0);
-                  return;
-              }
+            //apply async, so inner templates can finish content needed during widget initialization
+            if (options.async === true || (widgetConfig.async === true && options.async !== false)) {
+                setTimeout(function() {
+                    binding.setup(element, options, context);
+                }, 0);
+                return;
+            }
 
-              binding.setup(element, options, context);
+            binding.setup(element, options, context);
 
-              if (options && options.useKOTemplates) {
-                  return { controlsDescendantBindings: true };
-              }
+            if (options && options.useKOTemplates) {
+                return { controlsDescendantBindings: true };
+            }
         };
 
         //build the core logic for the init function
@@ -48,9 +53,15 @@ ko.kendo.BindingFactory = function() {
             self.watchValues(widget, options, widgetConfig, element);
 
             //step 6: handle disposal, if there is a destroy method on the widget
-            if(widget.destroy) {
+            if (widget.destroy) {
                 ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
-                    widget.destroy();
+                    if (widget.element) {
+                        if (typeof kendo.destroy === "function") {
+                            kendo.destroy(widget.element);
+                        } else {
+                            widget.destroy();
+                        }
+                    }
                 });
             }
         };
@@ -65,7 +76,7 @@ ko.kendo.BindingFactory = function() {
     this.buildOptions = function(widgetConfig, valueAccessor) {
         var defaultOption = widgetConfig.defaultOption,
             options = ko.utils.extend({}, ko.bindingHandlers[widgetConfig.name].options),
-            valueOrOptions = ko.utils.unwrapObservable(valueAccessor());
+            valueOrOptions = unwrap(valueAccessor());
 
         if (valueOrOptions instanceof kendo.data.DataSource || typeof valueOrOptions !== "object" || valueOrOptions === null || (defaultOption && !(defaultOption in valueOrOptions))) {
             options[defaultOption] = valueAccessor();
@@ -118,7 +129,7 @@ ko.kendo.BindingFactory = function() {
             else if (typeof object === "object") {
                 for (prop in object) {
                     //include things on prototype
-                    result[prop] = ko.utils.unwrapObservable(object[prop]);
+                    result[prop] = unwrap(object[prop]);
                 }
             }
         }
@@ -162,7 +173,7 @@ ko.kendo.BindingFactory = function() {
             read: function() {
                 var existing, custom,
                     action = widgetConfig.watch[prop],
-                    value = ko.utils.unwrapObservable(options[prop]),
+                    value = unwrap(options[prop]),
                     params = widgetConfig.parent ? [element] : []; //child bindings pass element first to APIs
 
                 //support passing multiple events like ["open", "close"]
@@ -287,4 +298,15 @@ var extendAndRedraw = function(prop) {
             this.value(0.001 + this.value());
         }
     };
+};
+
+var openIfVisible = function(value, options) {
+    if (!value) {
+        //causes issues with event triggering, if closing programmatically, when unnecessary
+        if (this.element.parent().is(":visible")) {
+            this.close();
+        }
+    } else {
+        this.open(typeof options.target === "string" ? $(unwrap(options.target)) : options.target);
+    }
 };

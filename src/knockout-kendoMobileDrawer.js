@@ -1,19 +1,19 @@
 createBinding({
-    name: "kendoWindow",
+    name: "kendoMobileDrawer",
     events: {
-        open: {
+        show: {
             writeTo: ISOPEN,
             value: true
         },
-        close: {
+        hide: {
             writeTo: ISOPEN,
             value: false
         }
     },
     watch: {
-        content: CONTENT,
-        title: TITLE,
-        isOpen: [OPEN, CLOSE]
+        isOpen: function(value) {
+            this[value ? "show" : "hide"]();
+        }
     },
     async: true
 });
